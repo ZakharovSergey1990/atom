@@ -1,7 +1,10 @@
 package ru.atom.domain.usecase
 
+import android.util.Log
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import ru.atom.domain.model.Charger
 import ru.atom.domain.model.Resource
 import ru.atom.domain.model.ViewState
@@ -19,6 +22,6 @@ class GetChargersUseCase @Inject constructor(
                is Resource.Error -> emit(ViewState.Error(result.message))
                is Resource.Success -> emit(ViewState.Success(result.data.sortedBy { it.name }))
            }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 }
